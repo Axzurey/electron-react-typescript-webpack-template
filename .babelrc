@@ -13,5 +13,11 @@
     */
     "plugins": [
         "@babel/plugin-transform-runtime"
-    ]
+    ],
+    "sourceMaps": true,
+    "env": {
+        "production": {
+            "comments": false
+        }
+    }
 }
