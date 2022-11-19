@@ -16,6 +16,7 @@
     "isolatedModules": true,
     "target": "es5",
     "sourceMap": true,
+    "outDir": "../dist",
     "rootDir": "../",
     "noEmitOnError": true,
     "typeRoots": [

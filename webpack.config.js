@@ -1,8 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
+const path = require('path');
+
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 module.exports = [
     {
-        mode: 'development',
+        mode: isDevelopment ? 'development' : 'production',
         entry: './electron/main.ts',
         target: 'electron-main',
         module: {
@@ -14,26 +19,26 @@ module.exports = [
         },
         output: {
             path: __dirname + '/dist/electron',
-            filename: 'electron.js',
+            filename: 'main.js',
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.html'],
-            modules: ['electron', 'node_modules']
+            modules: ['electron', 'node_modules'],
         },
     },
     {
-        mode: 'development',
-        entry: './src/index.tsx',
+        mode: isDevelopment ? 'development' : 'production',
+        entry: ['react-hot-loader/patch', './src/index.tsx'],
         target: 'web',
         devtool: 'inline-source-map',
         resolve: {
             extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.html'],
-            modules: ['src', 'node_modules']
+            modules: ['src', 'node_modules'],
         },
         module: { rules: [{
             test: /\.ts(x?)$/,
             include: /src/,
-            use: [{ loader: 'ts-loader' }]
+            use: [{ loader: 'ts-loader', }],
         }] },
         output: {
             path: __dirname + '/dist',
@@ -46,7 +51,8 @@ module.exports = [
         ],
         devServer: {
             port: 3000,
-            hot: true
+            hot: true,
+            liveReload: false
         }
     }
 ];
