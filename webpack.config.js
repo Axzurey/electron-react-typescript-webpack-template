@@ -1,58 +1,51 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const ReactRefreshTypeScript = require('react-refresh-typescript');
 const path = require('path');
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-module.exports = [
-    {
-        mode: isDevelopment ? 'development' : 'production',
-        entry: './electron/main.ts',
-        target: 'electron-main',
-        module: {
-            rules: [{
-            test: /\.ts$/,
-            include: /electron/,
-            use: [{ loader: 'ts-loader' }]
-            }]
-        },
-        output: {
-            path: __dirname + '/dist/electron',
-            filename: 'main.js',
-        },
-        resolve: {
-            extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.html'],
-            modules: ['electron', 'node_modules'],
-        },
-    },
-    {
-        mode: isDevelopment ? 'development' : 'production',
-        entry: ['react-hot-loader/patch', './src/index.tsx'],
-        target: 'web',
-        devtool: 'inline-source-map',
-        resolve: {
-            extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.html'],
-            modules: ['src', 'node_modules'],
-        },
-        module: { rules: [{
-            test: /\.ts(x?)$/,
-            include: /src/,
-            use: [{ loader: 'ts-loader', }],
-        }] },
-        output: {
-            path: __dirname + '/dist',
-            filename: 'index.js'
-        },
-        plugins: [
-            new HtmlWebpackPlugin({
-                template: './public/index.html'
-            })
+module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
+  devServer: {
+    client: { overlay: false },
+    port: 3000
+  },
+  entry: {
+    main: './src/index.tsx',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        include: path.join(__dirname, 'src'),
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: isDevelopment ? 'tsconfig.dev.json' : 'tsconfig.json',
+              transpileOnly: true,
+              ...(isDevelopment && {
+                getCustomTransformers: () => ({
+                  before: [ReactRefreshTypeScript()],
+                }),
+              }),
+            },
+          },
         ],
-        devServer: {
-            port: 3000,
-            hot: true,
-            liveReload: false
-        }
-    }
-];
+      },
+    ],
+  },
+  plugins: [
+    isDevelopment && new ReactRefreshPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      filename: './index.html',
+      template: './public/index.html',
+    }),
+  ].filter(Boolean),
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+  },
+};

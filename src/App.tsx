@@ -1,15 +1,7 @@
-import { hot } from 'react-hot-loader/root';
-import { setConfig } from 'react-hot-loader'; //these 2 first
-
 import * as React from 'react'
 import { Counter } from './components/Counter';
 
-setConfig({
-  reloadHooks: false,
-  reloadHooksOnBodyChange: false
-} as any);
-
-function App() {
+export default function App() {
 
 	document.body.style.overflow = "hidden" //no more scrolly wolly
 	document.body.style.height = '100%';
@@ -22,5 +14,3 @@ function App() {
 		</div>
 	)
 }
-
-export default hot(App); //this is require to keep the state of hooks after hot-reloading
