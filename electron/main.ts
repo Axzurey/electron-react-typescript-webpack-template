@@ -1,10 +1,13 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import * as isDev from 'electron-is-dev';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
 let win: BrowserWindow | null = null;
 
-function createWindow() {
+const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false
+
+console.log(isDev, process.env.APP_DEV)
+
+async function createWindow() {
 	win = new BrowserWindow({
 		width: 1000,
 		height: 700,
@@ -17,10 +20,12 @@ function createWindow() {
 	})
 
 	if (isDev) {
+		console.log('loading from dev')
 		win.loadURL('http://localhost:3000/index.html');
 	} else {
 		// 'build/index.html'
-		win.loadURL(`file://${__dirname}/../index.html`);
+		console.log('loading from prod')
+		await win.loadURL(`file://${__dirname}/../index.html`);
 	}
 
 	win.on('closed', () => win = null);
@@ -31,7 +36,8 @@ function createWindow() {
 		.catch((err) => console.log('An error occurred: ', err));
 
 	if (isDev) {
-		win.webContents.openDevTools();
+		console.log('it is dev!')
+		//win.webContents.openDevTools();
 	}
 }
 
