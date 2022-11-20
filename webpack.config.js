@@ -45,7 +45,7 @@ module.exports = (env) => {
       new HtmlWebpackPlugin({
         filename: './index.html',
         template: './public/index.html',
-      }),
+      })
     ].filter(Boolean),
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],

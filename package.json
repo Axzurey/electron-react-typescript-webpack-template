@@ -5,7 +5,7 @@
   "main": "./dist/electron/main.js",
   "homepage": ".",
   "scripts": {
-    "start": "rmdir ./dist && webpack serve --hot",
+    "start": "webpack serve --hot",
     "build": "webpack --env production --config ./webpack.config.js",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && SET APP_DEV=true && electron .\"",
@@ -20,12 +20,12 @@
     "web-vitals": "^3.1.0"
   },
   "devDependencies": {
-    "electron": "^21.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.5",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "concurrently": "^7.5.0",
     "cross-env": "^7.0.3",
+    "electron": "^21.3.0",
     "electron-builder": "^23.6.0",
     "fork-ts-checker-webpack-plugin": "^7.2.2",
     "html-webpack-plugin": "^5.5.0",
