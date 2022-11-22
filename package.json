@@ -1,7 +1,7 @@
 {
-  "name": "new-react-app",
+  "name": "%NAME%",
   "version": "1.0.0",
-  "description": "A new react app without CRA",
+  "description": "%DESC%",
   "main": "./dist/electron/main.js",
   "homepage": ".",
   "scripts": {
@@ -11,7 +11,7 @@
     "electron:dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && SET APP_DEV=true && electron .\"",
     "electron:build": "npm run build && tsc -p electron && electron-builder"
   },
-  "author": "",
+  "author": "%AUTHOR%",
   "license": "ISC",
   "dependencies": {
     "electron-devtools-installer": "^3.2.0",
@@ -51,7 +51,7 @@
     ]
   },
   "build": {
-    "appId": "ncra.app",
+    "appId": "%NAME%.app",
     "directories": {
       "output": "resources",
       "buildResources": "public"

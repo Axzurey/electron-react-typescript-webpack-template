@@ -5,8 +5,6 @@ let win: BrowserWindow | null = null;
 
 const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false
 
-console.log(isDev, process.env.APP_DEV)
-
 async function createWindow() {
 	win = new BrowserWindow({
 		width: 1000,
@@ -20,11 +18,9 @@ async function createWindow() {
 	})
 
 	if (isDev) {
-		console.log('loading from dev')
 		win.loadURL('http://localhost:3000/index.html');
-	} else {
-		// 'build/index.html'
-		console.log('loading from prod')
+	}
+	else {
 		await win.loadURL(`file://${__dirname}/../index.html`);
 	}
 
